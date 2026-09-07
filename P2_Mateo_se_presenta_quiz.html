@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mateo se presenta · Listening</title>
+<style>
+  :root{
+    --bg:#fff8f0; --card:#ffffff; --ink:#2b2b2b; --muted:#6b6b6b; --line:#e9ddc9;
+    --accent:#c9622e; --accent-soft:#f7e6d8;
+    --good:#2e7d32; --good-soft:#e4f2e4; --bad:#c62828; --bad-soft:#fbe4e4;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5}
+  .wrap{max-width:760px;margin:0 auto;padding:24px 18px 110px}
+  header h1{margin:0 0 4px;font-size:1.7rem;color:var(--accent)}
+  header p.sub{margin:0;color:var(--muted);font-size:.95rem}
+
+  .audio-box{position:sticky;top:0;z-index:120;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:11px 14px;margin:14px 0 10px;box-shadow:0 6px 16px rgba(150,110,70,.16)}
+  audio{width:100%;display:block}
+  .audio-box .hint{color:var(--muted);font-size:.82rem;margin:7px 0 0;font-weight:400;
+    line-height:1.35}
+  @media (max-width:480px){ .audio-box .hint{display:none} }
+
+  .block{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;margin:18px 0;box-shadow:0 2px 8px rgba(150,110,70,.07)}
+  .block > h2{margin:0 0 4px;font-size:1.2rem;color:var(--accent)}
+  .block > .blk-desc{margin:0 0 6px;color:var(--muted);font-size:.9rem}
+  h3.part{margin:18px 0 2px;font-size:1rem;color:var(--ink)}
+  h3.part:first-of-type{margin-top:12px}
+  .part-desc{margin:0 0 6px;color:var(--muted);font-size:.85rem}
+
+  .q{padding:11px 0;border-top:1px solid var(--line)}
+  .q .prompt{font-weight:600;margin-bottom:8px}
+  .q .prompt .num{color:var(--accent);margin-right:6px}
+  .es{font-style:normal;font-weight:700}
+  .scram{letter-spacing:.35em;font-weight:700;font-size:1.1rem;color:var(--accent);margin-bottom:8px}
+
+  .options{display:flex;flex-direction:column;gap:6px}
+  .options label{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--line);
+    border-radius:10px;cursor:pointer;transition:background .12s}
+  .options label:hover{background:var(--accent-soft)}
+  .options input{accent-color:var(--accent);width:16px;height:16px;flex:none}
+
+  input[type=text]{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;
+    background:#fffdfa;min-width:150px}
+  input[type=text]:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  select{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:10px;background:#fffdfa}
+
+  .gapline{margin:2px 0;font-size:1.02rem}
+  .gapline input[type=text]{min-width:120px}
+  .match-row{display:flex;align-items:center;gap:12px;margin:4px 0;flex-wrap:wrap}
+  .match-row .es{min-width:130px}
+
+  .feedback{margin-top:7px;font-size:.9rem;font-weight:600;display:none}
+  .q.correct .feedback{display:block;color:var(--good)}
+  .q.wrong .feedback{display:block;color:var(--bad)}
+  .q.correct{background:var(--good-soft);border-radius:10px;padding-left:10px;padding-right:10px}
+  .q.wrong{background:var(--bad-soft);border-radius:10px;padding-left:10px;padding-right:10px}
+
+  .blk-foot{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .check{background:var(--accent);color:#fff;font:inherit;font-weight:700;cursor:pointer;
+    border:none;border-radius:12px;padding:10px 20px}
+  .check:hover{background:#b0521f}
+  .blk-score{font-weight:800;color:var(--accent)}
+
+  .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);
+    padding:12px 18px;display:flex;gap:14px;align-items:center;justify-content:center;
+    box-shadow:0 -3px 12px rgba(150,110,70,.08)}
+  #reset,#home{background:var(--accent-soft);color:var(--accent);font:inherit;font-weight:700;cursor:pointer;
+    border:none;border-radius:12px;padding:10px 20px;text-decoration:none;display:inline-block}
+  #home:hover{background:var(--accent);color:#fff}
+  #total{font-weight:800;font-size:1.05rem;color:var(--accent);min-width:130px;text-align:center}
+
+  .end{margin:22px 0 4px;text-align:center}
+  #show-transcript{background:#efe6d8;color:var(--muted);font:inherit;font-weight:700;
+    border:none;border-radius:12px;padding:12px 24px;cursor:not-allowed}
+  #show-transcript.ready{background:var(--accent);color:#fff;cursor:pointer}
+  #show-transcript.ready:hover{background:#b0521f}
+  .end .lock-hint{margin:8px 0 0;color:var(--muted);font-size:.82rem}
+  .modal{position:fixed;inset:0;background:rgba(40,25,15,.55);display:none;
+    align-items:flex-start;justify-content:center;padding:88px 16px 24px;z-index:50}
+  .modal.open{display:flex}
+  .modal-card{background:var(--card);border-radius:var(--radius);max-width:520px;width:100%;
+    max-height:80vh;overflow:auto;padding:22px 24px;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+  .modal-card h3{margin:0 0 10px;color:var(--accent)}
+  .modal-card .modal-note{margin:0 0 12px;color:var(--muted);font-size:.85rem}
+  .modal-card .script{white-space:pre-line;line-height:1.7;font-size:1.02rem}
+  .modal-card .modal-close{margin-top:16px;background:var(--accent-soft);color:var(--accent);
+    border:none;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Mateo se presenta</h1>
+    <p class="sub">End of Year 1 review — Listening practice</p>
+  </header>
+
+  <div class="audio-box">
+    <audio controls preload="none" src="P2_Mateo_se_presenta.mp3"></audio>
+    <p class="hint">🎧 Play it as many times as you like. Do Part&nbsp;1, press <strong>Check Part&nbsp;1</strong>, then Part&nbsp;2.</p>
+  </div>
+
+  <form id="quiz">
+
+  <!-- ============ BLOCK 1 ============ -->
+  <section class="block" data-block="1">
+    <h2>Part 1 · Listening</h2>
+    <p class="blk-desc">Listen to the audio and answer questions 1–10. You’ll hear Mateo answering an interviewer’s questions — every question below is about Mateo.</p>
+
+    <h3 class="part">Choose the correct answer</h3>
+    <div class="q" data-type="mc" data-answer="a">
+      <div class="prompt"><span class="num">1.</span>Where is Mateo from?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="a"> Colombia</label>
+        <label><input type="radio" name="q1" value="b"> España</label>
+        <label><input type="radio" name="q1" value="c"> México</label>
+        <label><input type="radio" name="q1" value="d"> Argentina</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="b">
+      <div class="prompt"><span class="num">2.</span>When is Mateo's birthday?</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="a"> el veinte de junio</label>
+        <label><input type="radio" name="q2" value="b"> el veinte de julio</label>
+        <label><input type="radio" name="q2" value="c"> el diez de julio</label>
+        <label><input type="radio" name="q2" value="d"> el dos de julio</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="c">
+      <div class="prompt"><span class="num">3.</span>What is Mateo's family?</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="a"> dos hermanos y una hermana menor</label>
+        <label><input type="radio" name="q3" value="b"> un hermano mayor y una hermana</label>
+        <label><input type="radio" name="q3" value="c"> dos hermanas y un hermano menor</label>
+        <label><input type="radio" name="q3" value="d"> una hermana menor</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="d">
+      <div class="prompt"><span class="num">4.</span>What is Mateo's dog like?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="a"> pequeño</label>
+        <label><input type="radio" name="q4" value="b"> feroz</label>
+        <label><input type="radio" name="q4" value="c"> pequeño y blanco</label>
+        <label><input type="radio" name="q4" value="d"> grande</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="a">
+      <div class="prompt"><span class="num">5.</span>What does Mateo think of football?</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="a"> apasionante y emocionante</label>
+        <label><input type="radio" name="q5" value="b"> aburrido y difícil</label>
+        <label><input type="radio" name="q5" value="c"> lento y fácil</label>
+        <label><input type="radio" name="q5" value="d"> terrible y aburrido</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="c">
+      <div class="prompt"><span class="num">6.</span>Which sport does Mateo detest <span class="es">(detesto)</span>?</div>
+      <div class="options">
+        <label><input type="radio" name="q6" value="a"> el fútbol</label>
+        <label><input type="radio" name="q6" value="b"> el baloncesto</label>
+        <label><input type="radio" name="q6" value="c"> el tenis</label>
+        <label><input type="radio" name="q6" value="d"> la natación</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <h3 class="part">True or false?</h3>
+    <div class="q" data-type="mc" data-answer="T">
+      <div class="prompt"><span class="num">7.</span>Mateo is 14 years old.</div>
+      <div class="options">
+        <label><input type="radio" name="q7" value="T"> True</label>
+        <label><input type="radio" name="q7" value="F"> False</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="F">
+      <div class="prompt"><span class="num">8.</span>Mateo has a small dog.</div>
+      <div class="options">
+        <label><input type="radio" name="q8" value="T"> True</label>
+        <label><input type="radio" name="q8" value="F"> False</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="T">
+      <div class="prompt"><span class="num">9.</span>Mateo plays football in a team.</div>
+      <div class="options">
+        <label><input type="radio" name="q9" value="T"> True</label>
+        <label><input type="radio" name="q9" value="F"> False</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="F">
+      <div class="prompt"><span class="num">10.</span>Mateo loves tennis.</div>
+      <div class="options">
+        <label><input type="radio" name="q10" value="T"> True</label>
+        <label><input type="radio" name="q10" value="F"> False</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="blk-foot">
+      <button type="button" class="check" data-block="1">Check Part 1</button>
+      <span class="blk-score"></span>
+    </div>
+  </section>
+
+  <!-- ============ BLOCK 2 ============ -->
+  <section class="block" data-block="2">
+    <h2>Part 2 · Vocabulary</h2>
+    <p class="blk-desc">Questions 11–20. Capital letters and accents are not required.</p>
+
+    <h3 class="part">Fill the gap with the Spanish word</h3>
+    <div class="q" data-type="text" data-answer="veinte">
+      <div class="prompt"><span class="num">11.</span>"My birthday is the ___ of July" (20)</div>
+      <div class="gapline">Mi cumpleaños es el <input type="text" autocomplete="off" spellcheck="false"> de julio</div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="text" data-answer="generosos|generoso|generosa">
+      <div class="prompt"><span class="num">12.</span>"My parents are nice and ___" (generous)</div>
+      <div class="gapline">Mis padres son simpáticos y <input type="text" autocomplete="off" spellcheck="false"></div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="text" data-answer="grande">
+      <div class="prompt"><span class="num">13.</span>"I have a ___ dog" (big)</div>
+      <div class="gapline">Tengo un perro <input type="text" autocomplete="off" spellcheck="false"></div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="text" data-answer="detesto">
+      <div class="prompt"><span class="num">14.</span>"I ___ tennis because it is boring" (I detest)</div>
+      <div class="gapline"><input type="text" autocomplete="off" spellcheck="false"> el tenis porque es aburrido</div>
+      <div class="feedback"></div>
+    </div>
+
+    <h3 class="part">Match the meaning</h3>
+    <p class="part-desc">Choose the English meaning.</p>
+    <div class="q" data-type="select" data-answer="exciting">
+      <div class="prompt"><span class="num">15.</span></div>
+      <div class="match-row"><span class="es">apasionante</span>
+        <select>
+          <option value="">— choose —</option>
+          <option>exciting</option>
+          <option>boring</option>
+          <option>team</option>
+          <option>birthday</option>
+        </select>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="select" data-answer="boring">
+      <div class="prompt"><span class="num">16.</span></div>
+      <div class="match-row"><span class="es">aburrido/a</span>
+        <select>
+          <option value="">— choose —</option>
+          <option>exciting</option>
+          <option>boring</option>
+          <option>team</option>
+          <option>birthday</option>
+        </select>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="select" data-answer="team">
+      <div class="prompt"><span class="num">17.</span></div>
+      <div class="match-row"><span class="es">el equipo</span>
+        <select>
+          <option value="">— choose —</option>
+          <option>exciting</option>
+          <option>boring</option>
+          <option>team</option>
+          <option>birthday</option>
+        </select>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="select" data-answer="birthday">
+      <div class="prompt"><span class="num">18.</span></div>
+      <div class="match-row"><span class="es">el cumpleaños</span>
+        <select>
+          <option value="">— choose —</option>
+          <option>exciting</option>
+          <option>boring</option>
+          <option>team</option>
+          <option>birthday</option>
+        </select>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <h3 class="part">Write it in Spanish</h3>
+    <div class="q" data-type="text" data-answer="la hermana">
+      <div class="prompt"><span class="num">19.</span>"the sister" <em>(2 words)</em></div>
+      <input type="text" autocomplete="off" spellcheck="false">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="text" data-answer="para mí|para mi">
+      <div class="prompt"><span class="num">20.</span>"for me" <em>(2 words)</em></div>
+      <input type="text" autocomplete="off" spellcheck="false">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="blk-foot">
+      <button type="button" class="check" data-block="2">Check Part 2</button>
+      <span class="blk-score"></span>
+    </div>
+  </section>
+
+  </form>
+
+  <div class="end">
+    <button type="button" id="show-transcript" disabled>📄 Show transcript</button>
+    <p class="lock-hint">Unlocks after you check both parts.</p>
+  </div>
+</div>
+
+<div class="modal" id="transcript-modal">
+  <div class="modal-card">
+    <h3>Transcript &middot; Mateo se presenta</h3>
+    <p class="modal-note">🔊 Use the player above to listen again.</p>
+    <div class="script">—¡Hola! ¿De dónde eres y cómo te llamas?
+—Hola, soy Mateo. Soy de Colombia, de Medellín.
+—¿Cuántos años tienes?
+—Tengo catorce años. Mi cumpleaños es el veinte de julio.
+—¿Cómo es tu familia?
+—Tengo dos hermanas y un hermano menor. Mis padres son simpáticos y generosos. También tengo un perro grande. Se llama Rambo.
+—¿Eres deportista?
+—Sí, me chifla el fútbol. Juego en un equipo. Para mí, el fútbol es apasionante y emocionante. Pero detesto el tenis porque es aburrido.
+—¡Chévere! Gracias, Mateo.</div>
+    <button type="button" class="modal-close">Close</button>
+  </div>
+</div>
+
+<div class="bar">
+  <a href="index.html" id="home">← Menu</a>
+  <button type="button" id="reset">Reset</button>
+  <div id="total">— / 20</div>
+</div>
+
+<script>
+(function(){
+  var norm = function(s){
+    return (s||"").toString().trim().toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g,"")
+      .replace(/[!¡?¿.,;:]/g,"").replace(/\s+/g," ");
+  };
+
+  function evalQuestion(q){
+    var type = q.dataset.type, expected = q.dataset.answer;
+    var fb = q.querySelector(".feedback"), got, ok;
+
+    if(type === "mc"){
+      var checked = q.querySelector("input[type=radio]:checked");
+      got = checked ? checked.value : null;
+      ok = got === expected;
+      if(ok){ fb.textContent = "Correct ✓"; }
+      else {
+        var right = q.querySelector('input[type=radio][value="'+expected+'"]');
+        var lbl = right ? right.closest("label").textContent.trim() : expected;
+        fb.textContent = (got ? "Incorrect ✗" : "Not answered ✗") + "  →  " + lbl;
+      }
+    } else if(type === "select"){
+      got = q.querySelector("select").value;
+      ok = got === expected;
+      fb.textContent = ok ? "Correct ✓"
+        : (got ? "Incorrect ✗  →  " + expected : "Not answered ✗  →  " + expected);
+    } else {
+      got = q.querySelector("input[type=text]").value;
+      ok = expected.split("|").map(norm).indexOf(norm(got)) !== -1;
+      fb.textContent = ok ? "Correct ✓"
+        : (norm(got) ? "Not quite ✗  →  " + expected.split("|")[0]
+                     : "Not answered ✗  →  " + expected.split("|")[0]);
+    }
+    q.classList.toggle("correct", ok);
+    q.classList.toggle("wrong", !ok);
+    return ok;
+  }
+
+  function updateTotal(){
+    var done = document.querySelectorAll('.block[data-checked="1"] .q').length;
+    var correct = document.querySelectorAll('.block[data-checked="1"] .q.correct').length;
+    var total = document.querySelectorAll('.q').length;
+    var el = document.getElementById("total");
+    el.textContent = correct + " / " + total + (done < total ? "  (" + done + " checked)" : "  — done!");
+    if(done === total){
+      var bt = document.getElementById("show-transcript");
+      bt.disabled = false; bt.classList.add("ready");
+    }
+  }
+
+  document.querySelectorAll(".check").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var block = btn.closest(".block");
+      var qs = Array.prototype.slice.call(block.querySelectorAll(".q"));
+      var correct = 0;
+      qs.forEach(function(q){ if(evalQuestion(q)) correct++; });
+      block.dataset.checked = "1";
+      block.querySelector(".blk-score").textContent = correct + " / " + qs.length;
+      updateTotal();
+      var firstWrong = block.querySelector(".q.wrong");
+      if(firstWrong) firstWrong.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  });
+
+  document.getElementById("reset").addEventListener("click", function(){
+    document.getElementById("quiz").reset();
+    document.querySelectorAll(".block").forEach(function(b){ delete b.dataset.checked; });
+    document.querySelectorAll(".q").forEach(function(q){
+      q.classList.remove("correct","wrong");
+      q.querySelector(".feedback").textContent = "";
+    });
+    document.querySelectorAll(".blk-score").forEach(function(s){ s.textContent = ""; });
+    document.getElementById("total").textContent = "— / 20";
+    var bt = document.getElementById("show-transcript");
+    bt.disabled = true; bt.classList.remove("ready");
+    document.getElementById("transcript-modal").classList.remove("open");
+    document.body.style.overflow = "";
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  var modal = document.getElementById("transcript-modal");
+  function openModal(){ modal.classList.add("open"); document.body.style.overflow = "hidden"; }
+  function closeModal(){ modal.classList.remove("open"); document.body.style.overflow = ""; }
+  document.getElementById("show-transcript").addEventListener("click", function(){
+    if(this.disabled) return;
+    openModal();
+  });
+  modal.addEventListener("click", function(e){
+    if(e.target === modal || e.target.classList.contains("modal-close")) closeModal();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") closeModal();
+  });
+})();
+</script>
+</body>
+</html>
