@@ -73,6 +73,22 @@
     border:none;border-radius:12px;padding:10px 20px;text-decoration:none;display:inline-block}
   #home:hover{background:var(--accent);color:#fff}
   #total{font-weight:800;font-size:1.05rem;color:var(--accent);min-width:130px;text-align:center}
+
+  .end{margin:22px 0 4px;text-align:center}
+  #show-transcript{background:#efe6d8;color:var(--muted);font:inherit;font-weight:700;
+    border:none;border-radius:12px;padding:12px 24px;cursor:not-allowed}
+  #show-transcript.ready{background:var(--accent);color:#fff;cursor:pointer}
+  #show-transcript.ready:hover{background:#b0521f}
+  .end .lock-hint{margin:8px 0 0;color:var(--muted);font-size:.82rem}
+  .modal{position:fixed;inset:0;background:rgba(40,25,15,.55);display:none;
+    align-items:center;justify-content:center;padding:20px;z-index:50}
+  .modal.open{display:flex}
+  .modal-card{background:var(--card);border-radius:var(--radius);max-width:520px;width:100%;
+    max-height:80vh;overflow:auto;padding:22px 24px;box-shadow:0 12px 40px rgba(0,0,0,.3)}
+  .modal-card h3{margin:0 0 12px;color:var(--accent)}
+  .modal-card .script{white-space:pre-line;line-height:1.7;font-size:1.02rem}
+  .modal-card .modal-close{margin-top:16px;background:var(--accent-soft);color:var(--accent);
+    border:none;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer}
 </style>
 </head>
 <body>
@@ -305,6 +321,24 @@
   </section>
 
   </form>
+
+  <div class="end">
+    <button type="button" id="show-transcript" disabled>📄 Show transcript</button>
+    <p class="lock-hint">Unlocks after you check both parts.</p>
+  </div>
+</div>
+
+<div class="modal" id="transcript-modal">
+  <div class="modal-card">
+    <h3>Transcript &middot; Mi color favorito</h3>
+    <div class="script">—Mi color favorito es el azul. ¿Y tú?
+—Me encanta el verde. Pero no me gusta el naranja.
+—A mí me gusta mucho el rojo. Odio el gris.
+—Yo detesto el marrón. Prefiero los colores claros.
+—También me gusta el morado.
+—¡Fenomenal!</div>
+    <button type="button" class="modal-close">Close</button>
+  </div>
 </div>
 
 <div class="bar">
@@ -358,6 +392,10 @@
     var total = document.querySelectorAll('.q').length;
     var el = document.getElementById("total");
     el.textContent = correct + " / " + total + (done < total ? "  (" + done + " checked)" : "  — done!");
+    if(done === total){
+      var bt = document.getElementById("show-transcript");
+      bt.disabled = false; bt.classList.add("ready");
+    }
   }
 
   document.querySelectorAll(".check").forEach(function(btn){
@@ -383,7 +421,22 @@
     });
     document.querySelectorAll(".blk-score").forEach(function(s){ s.textContent = ""; });
     document.getElementById("total").textContent = "— / 20";
+    var bt = document.getElementById("show-transcript");
+    bt.disabled = true; bt.classList.remove("ready");
+    document.getElementById("transcript-modal").classList.remove("open");
     window.scrollTo({top:0, behavior:"smooth"});
+  });
+
+  var modal = document.getElementById("transcript-modal");
+  document.getElementById("show-transcript").addEventListener("click", function(){
+    if(this.disabled) return;
+    modal.classList.add("open");
+  });
+  modal.addEventListener("click", function(e){
+    if(e.target === modal || e.target.classList.contains("modal-close")) modal.classList.remove("open");
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") modal.classList.remove("open");
   });
 })();
 </script>
