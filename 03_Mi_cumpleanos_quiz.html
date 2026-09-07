@@ -18,7 +18,7 @@
   header h1{margin:0 0 4px;font-size:1.7rem;color:var(--accent)}
   header p.sub{margin:0;color:var(--muted);font-size:.95rem}
 
-  .audio-box{position:sticky;top:0;z-index:20;background:var(--card);
+  .audio-box{position:sticky;top:0;z-index:120;background:var(--card);
     border:1px solid var(--line);border-radius:var(--radius);
     padding:11px 14px;margin:14px 0 10px;box-shadow:0 6px 16px rgba(150,110,70,.16)}
   audio{width:100%;display:block}
@@ -83,11 +83,12 @@
   #show-transcript.ready:hover{background:#b0521f}
   .end .lock-hint{margin:8px 0 0;color:var(--muted);font-size:.82rem}
   .modal{position:fixed;inset:0;background:rgba(40,25,15,.55);display:none;
-    align-items:center;justify-content:center;padding:20px;z-index:50}
+    align-items:flex-start;justify-content:center;padding:88px 16px 24px;z-index:50}
   .modal.open{display:flex}
   .modal-card{background:var(--card);border-radius:var(--radius);max-width:520px;width:100%;
     max-height:80vh;overflow:auto;padding:22px 24px;box-shadow:0 12px 40px rgba(0,0,0,.3)}
-  .modal-card h3{margin:0 0 12px;color:var(--accent)}
+  .modal-card h3{margin:0 0 10px;color:var(--accent)}
+  .modal-card .modal-note{margin:0 0 12px;color:var(--muted);font-size:.85rem}
   .modal-card .script{white-space:pre-line;line-height:1.7;font-size:1.02rem}
   .modal-card .modal-close{margin-top:16px;background:var(--accent-soft);color:var(--accent);
     border:none;border-radius:10px;padding:9px 18px;font:inherit;font-weight:700;cursor:pointer}
@@ -102,7 +103,7 @@
 
   <div class="audio-box">
     <audio controls preload="none" src="03_Mi_cumpleanos.mp3"></audio>
-    <p class="hint">🎧 Play it as many times as you like — the player stays here while you scroll. Do Part&nbsp;1, press <strong>Check Part&nbsp;1</strong>, then Part&nbsp;2.</p>
+    <p class="hint">🎧 Play it as many times as you like. Do Part&nbsp;1, press <strong>Check Part&nbsp;1</strong>, then Part&nbsp;2.</p>
   </div>
 
   <form id="quiz">
@@ -332,6 +333,7 @@
 <div class="modal" id="transcript-modal">
   <div class="modal-card">
     <h3>Transcript &middot; Mi cumpleaños</h3>
+    <p class="modal-note">🔊 Use the player above to listen again.</p>
     <div class="script">—¿Cuándo es tu cumpleaños?
 —Mi cumpleaños es el quince de abril. ¿Y tú?
 —El tres de octubre.
@@ -427,19 +429,22 @@
     var bt = document.getElementById("show-transcript");
     bt.disabled = true; bt.classList.remove("ready");
     document.getElementById("transcript-modal").classList.remove("open");
+    document.body.style.overflow = "";
     window.scrollTo({top:0, behavior:"smooth"});
   });
 
   var modal = document.getElementById("transcript-modal");
+  function openModal(){ modal.classList.add("open"); document.body.style.overflow = "hidden"; }
+  function closeModal(){ modal.classList.remove("open"); document.body.style.overflow = ""; }
   document.getElementById("show-transcript").addEventListener("click", function(){
     if(this.disabled) return;
-    modal.classList.add("open");
+    openModal();
   });
   modal.addEventListener("click", function(e){
-    if(e.target === modal || e.target.classList.contains("modal-close")) modal.classList.remove("open");
+    if(e.target === modal || e.target.classList.contains("modal-close")) closeModal();
   });
   document.addEventListener("keydown", function(e){
-    if(e.key === "Escape") modal.classList.remove("open");
+    if(e.key === "Escape") closeModal();
   });
 })();
 </script>
