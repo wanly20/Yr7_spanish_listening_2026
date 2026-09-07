@@ -18,11 +18,13 @@
   header h1{margin:0 0 4px;font-size:1.7rem;color:var(--accent)}
   header p.sub{margin:0;color:var(--muted);font-size:.95rem}
 
-  .audio-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
-    padding:16px;margin:18px 0 8px;box-shadow:0 2px 8px rgba(150,110,70,.07)}
-  .audio-box p{margin:0 0 10px;font-weight:600}
-  audio{width:100%}
-  .hint{color:var(--muted);font-size:.85rem;margin-top:8px;font-weight:400}
+  .audio-box{position:sticky;top:0;z-index:20;background:var(--card);
+    border:1px solid var(--line);border-radius:var(--radius);
+    padding:11px 14px;margin:14px 0 10px;box-shadow:0 6px 16px rgba(150,110,70,.16)}
+  audio{width:100%;display:block}
+  .audio-box .hint{color:var(--muted);font-size:.82rem;margin:7px 0 0;font-weight:400;
+    line-height:1.35}
+  @media (max-width:480px){ .audio-box .hint{display:none} }
 
   .block{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
     padding:18px;margin:18px 0;box-shadow:0 2px 8px rgba(150,110,70,.07)}
@@ -99,9 +101,8 @@
   </header>
 
   <div class="audio-box">
-    <p>🎧 Listen as many times as you need.</p>
     <audio controls preload="none" src="01_Que_tal.mp3"></audio>
-    <p class="hint">Answer Part 1, press <strong>Check Part 1</strong>, then do Part 2.</p>
+    <p class="hint">🎧 Play it as many times as you like — the player stays here while you scroll. Do Part&nbsp;1, press <strong>Check Part&nbsp;1</strong>, then Part&nbsp;2.</p>
   </div>
 
   <form id="quiz">
