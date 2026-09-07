@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¿Qué tal? · Listening</title>
+<style>
+  :root{
+    --bg:#fff8f0; --card:#ffffff; --ink:#2b2b2b; --muted:#6b6b6b; --line:#e9ddc9;
+    --accent:#c9622e; --accent-soft:#f7e6d8;
+    --good:#2e7d32; --good-soft:#e4f2e4; --bad:#c62828; --bad-soft:#fbe4e4;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5}
+  .wrap{max-width:760px;margin:0 auto;padding:24px 18px 110px}
+  header h1{margin:0 0 4px;font-size:1.7rem;color:var(--accent)}
+  header p.sub{margin:0;color:var(--muted);font-size:.95rem}
+
+  .audio-box{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;margin:18px 0 8px;box-shadow:0 2px 8px rgba(150,110,70,.07)}
+  .audio-box p{margin:0 0 10px;font-weight:600}
+  audio{width:100%}
+  .hint{color:var(--muted);font-size:.85rem;margin-top:8px;font-weight:400}
+
+  .block{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:18px;margin:18px 0;box-shadow:0 2px 8px rgba(150,110,70,.07)}
+  .block > h2{margin:0 0 4px;font-size:1.2rem;color:var(--accent)}
+  .block > .blk-desc{margin:0 0 6px;color:var(--muted);font-size:.9rem}
+  h3.part{margin:18px 0 2px;font-size:1rem;color:var(--ink)}
+  h3.part:first-of-type{margin-top:12px}
+  .part-desc{margin:0 0 6px;color:var(--muted);font-size:.85rem}
+
+  .q{padding:11px 0;border-top:1px solid var(--line)}
+  .q .prompt{font-weight:600;margin-bottom:8px}
+  .q .prompt .num{color:var(--accent);margin-right:6px}
+  .es{font-style:normal;font-weight:700}
+  .scram{letter-spacing:.35em;font-weight:700;font-size:1.1rem;color:var(--accent);margin-bottom:8px}
+
+  .options{display:flex;flex-direction:column;gap:6px}
+  .options label{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--line);
+    border-radius:10px;cursor:pointer;transition:background .12s}
+  .options label:hover{background:var(--accent-soft)}
+  .options input{accent-color:var(--accent);width:16px;height:16px;flex:none}
+
+  input[type=text]{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;
+    background:#fffdfa;min-width:150px}
+  input[type=text]:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  select{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:10px;background:#fffdfa}
+
+  .gapline{margin:2px 0;font-size:1.02rem}
+  .gapline input[type=text]{min-width:120px}
+  .match-row{display:flex;align-items:center;gap:12px;margin:4px 0;flex-wrap:wrap}
+  .match-row .es{min-width:130px}
+
+  .feedback{margin-top:7px;font-size:.9rem;font-weight:600;display:none}
+  .q.correct .feedback{display:block;color:var(--good)}
+  .q.wrong .feedback{display:block;color:var(--bad)}
+  .q.correct{background:var(--good-soft);border-radius:10px;padding-left:10px;padding-right:10px}
+  .q.wrong{background:var(--bad-soft);border-radius:10px;padding-left:10px;padding-right:10px}
+
+  .blk-foot{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .check{background:var(--accent);color:#fff;font:inherit;font-weight:700;cursor:pointer;
+    border:none;border-radius:12px;padding:10px 20px}
+  .check:hover{background:#b0521f}
+  .blk-score{font-weight:800;color:var(--accent)}
+
+  .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);
+    padding:12px 18px;display:flex;gap:14px;align-items:center;justify-content:center;
+    box-shadow:0 -3px 12px rgba(150,110,70,.08)}
+  #reset{background:var(--accent-soft);color:var(--accent);font:inherit;font-weight:700;cursor:pointer;
+    border:none;border-radius:12px;padding:10px 20px}
+  #total{font-weight:800;font-size:1.05rem;color:var(--accent);min-width:130px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>¿Qué tal?</h1>
+    <p class="sub">Unit 1.2 — Listening practice</p>
+  </header>
+
+  <div class="audio-box">
+    <p>🎧 Listen as many times as you need.</p>
+    <audio controls preload="none" src="01_Que_tal.mp3"></audio>
+    <p class="hint">Answer Part 1, press <strong>Check Part 1</strong>, then do Part 2.</p>
+  </div>
+
+  <form id="quiz">
+
+  <!-- ============ BLOCK 1 ============ -->
+  <section class="block" data-block="1">
+    <h2>Part 1 · Listening</h2>
+    <p class="blk-desc">Listen to the audio and answer questions 1–10.</p>
+
+    <h3 class="part">Choose the correct answer</h3>
+    <div class="q" data-type="mc" data-answer="b">
+      <div class="prompt"><span class="num">1.</span>Which greeting do you hear at the start?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="a"> Buenos días</label>
+        <label><input type="radio" name="q1" value="b"> Buenas tardes</label>
+        <label><input type="radio" name="q1" value="c"> ¡Hasta luego!</label>
+        <label><input type="radio" name="q1" value="d"> ¡Adiós!</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="c">
+      <div class="prompt"><span class="num">2.</span>How does the <strong>first</strong> speaker feel?</div>
+      <div class="options">
+        <label><input type="radio" name="q2" value="a"> fenomenal</label>
+        <label><input type="radio" name="q2" value="b"> bien</label>
+        <label><input type="radio" name="q2" value="c"> fatal</label>
+        <label><input type="radio" name="q2" value="d"> regular</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="d">
+      <div class="prompt"><span class="num">3.</span>How does the <strong>second</strong> speaker feel?</div>
+      <div class="options">
+        <label><input type="radio" name="q3" value="a"> mal</label>
+        <label><input type="radio" name="q3" value="b"> regular</label>
+        <label><input type="radio" name="q3" value="c"> fatal</label>
+        <label><input type="radio" name="q3" value="d"> fenomenal</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="b">
+      <div class="prompt"><span class="num">4.</span>Which classroom object is mentioned?</div>
+      <div class="options">
+        <label><input type="radio" name="q4" value="a"> el cuaderno</label>
+        <label><input type="radio" name="q4" value="b"> el libro</label>
+        <label><input type="radio" name="q4" value="c"> el bolígrafo</label>
+        <label><input type="radio" name="q4" value="d"> el lápiz</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="a">
+      <div class="prompt"><span class="num">5.</span>What is the first speaker's problem?</div>
+      <div class="options">
+        <label><input type="radio" name="q5" value="a"> They do not have their book</label>
+        <label><input type="radio" name="q5" value="b"> They do not have a pen</label>
+        <label><input type="radio" name="q5" value="c"> They do not like the book</label>
+        <label><input type="radio" name="q5" value="d"> They lost their pencil case</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="c">
+      <div class="prompt"><span class="num">6.</span>How does the second speaker describe the book?</div>
+      <div class="options">
+        <label><input type="radio" name="q6" value="a"> histórico</label>
+        <label><input type="radio" name="q6" value="b"> famoso</label>
+        <label><input type="radio" name="q6" value="c"> fantástico</label>
+        <label><input type="radio" name="q6" value="d"> fatal</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <h3 class="part">True or false?</h3>
+    <div class="q" data-type="mc" data-answer="T">
+      <div class="prompt"><span class="num">7.</span>The conversation happens in the afternoon.</div>
+      <div class="options">
+        <label><input type="radio" name="q7" value="T"> True</label>
+        <label><input type="radio" name="q7" value="F"> False</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="F">
+      <div class="prompt"><span class="num">8.</span>Both speakers feel great.</div>
+      <div class="options">
+        <label><input type="radio" name="q8" value="T"> True</label>
+        <label><input type="radio" name="q8" value="F"> False</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="T">
+      <div class="prompt"><span class="num">9.</span>The second speaker has a book.</div>
+      <div class="options">
+        <label><input type="radio" name="q9" value="T"> True</label>
+        <label><input type="radio" name="q9" value="F"> False</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="F">
+      <div class="prompt"><span class="num">10.</span>They say <span class="es">Buenos días</span> to say goodbye.</div>
+      <div class="options">
+        <label><input type="radio" name="q10" value="T"> True</label>
+        <label><input type="radio" name="q10" value="F"> False</label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="blk-foot">
+      <button type="button" class="check" data-block="1">Check Part 1</button>
+      <span class="blk-score"></span>
+    </div>
+  </section>
+
+  <!-- ============ BLOCK 2 ============ -->
+  <section class="block" data-block="2">
+    <h2>Part 2 · Vocabulary</h2>
+    <p class="blk-desc">Questions 11–20. Capital letters and accents are not required.</p>
+
+    <h3 class="part">Fill the gap with the Spanish word</h3>
+    <div class="q" data-type="text" data-answer="tardes">
+      <div class="prompt"><span class="num">11.</span>The afternoon greeting:</div>
+      <div class="gapline">Buenas <input type="text" autocomplete="off" spellcheck="false"></div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="text" data-answer="tal">
+      <div class="prompt"><span class="num">12.</span>The casual way to ask "how are you?":</div>
+      <div class="gapline">¿Qué <input type="text" autocomplete="off" spellcheck="false">?</div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="text" data-answer="fatal">
+      <div class="prompt"><span class="num">13.</span>The first speaker's mood:</div>
+      <div class="gapline">¡<input type="text" autocomplete="off" spellcheck="false">!</div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="text" data-answer="adiós|adios">
+      <div class="prompt"><span class="num">14.</span>The very last word of the conversation:</div>
+      <div class="gapline">¡<input type="text" autocomplete="off" spellcheck="false">!</div>
+      <div class="feedback"></div>
+    </div>
+
+    <h3 class="part">Match the meaning</h3>
+    <p class="part-desc">Choose the English meaning.</p>
+    <div class="q" data-type="select" data-answer="great, excellent">
+      <div class="prompt"><span class="num">15.</span></div>
+      <div class="match-row"><span class="es">fenomenal</span>
+        <select>
+          <option value="">— choose —</option>
+          <option>And you?</option><option>awful</option>
+          <option>great, excellent</option><option>See you later!</option>
+        </select>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="select" data-answer="See you later!">
+      <div class="prompt"><span class="num">16.</span></div>
+      <div class="match-row"><span class="es">¡Hasta luego!</span>
+        <select>
+          <option value="">— choose —</option>
+          <option>And you?</option><option>awful</option>
+          <option>great, excellent</option><option>See you later!</option>
+        </select>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="select" data-answer="awful">
+      <div class="prompt"><span class="num">17.</span></div>
+      <div class="match-row"><span class="es">fatal</span>
+        <select>
+          <option value="">— choose —</option>
+          <option>And you?</option><option>awful</option>
+          <option>great, excellent</option><option>See you later!</option>
+        </select>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="select" data-answer="And you?">
+      <div class="prompt"><span class="num">18.</span></div>
+      <div class="match-row"><span class="es">¿Y tú?</span>
+        <select>
+          <option value="">— choose —</option>
+          <option>And you?</option><option>awful</option>
+          <option>great, excellent</option><option>See you later!</option>
+        </select>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <h3 class="part">Write it in Spanish</h3>
+    <div class="q" data-type="text" data-answer="buenas tardes">
+      <div class="prompt"><span class="num">19.</span>"Good afternoon" <em>(2 words)</em></div>
+      <input type="text" autocomplete="off" spellcheck="false">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="text" data-answer="hasta luego|¡hasta luego!">
+      <div class="prompt"><span class="num">20.</span>"See you later!" <em>(2 words)</em></div>
+      <input type="text" autocomplete="off" spellcheck="false">
+      <div class="feedback"></div>
+    </div>
+
+    <div class="blk-foot">
+      <button type="button" class="check" data-block="2">Check Part 2</button>
+      <span class="blk-score"></span>
+    </div>
+  </section>
+
+  </form>
+</div>
+
+<div class="bar">
+  <button type="button" id="reset">Reset</button>
+  <div id="total">— / 20</div>
+</div>
+
+<script>
+(function(){
+  var norm = function(s){
+    return (s||"").toString().trim().toLowerCase()
+      .normalize("NFD").replace(/[̀-ͯ]/g,"")
+      .replace(/[!¡?¿.,;:]/g,"").replace(/\s+/g," ");
+  };
+
+  function evalQuestion(q){
+    var type = q.dataset.type, expected = q.dataset.answer;
+    var fb = q.querySelector(".feedback"), got, ok;
+
+    if(type === "mc"){
+      var checked = q.querySelector("input[type=radio]:checked");
+      got = checked ? checked.value : null;
+      ok = got === expected;
+      if(ok){ fb.textContent = "Correct ✓"; }
+      else {
+        var right = q.querySelector('input[type=radio][value="'+expected+'"]');
+        var lbl = right ? right.closest("label").textContent.trim() : expected;
+        fb.textContent = (got ? "Incorrect ✗" : "Not answered ✗") + "  →  " + lbl;
+      }
+    } else if(type === "select"){
+      got = q.querySelector("select").value;
+      ok = got === expected;
+      fb.textContent = ok ? "Correct ✓"
+        : (got ? "Incorrect ✗  →  " + expected : "Not answered ✗  →  " + expected);
+    } else {
+      got = q.querySelector("input[type=text]").value;
+      ok = expected.split("|").map(norm).indexOf(norm(got)) !== -1;
+      fb.textContent = ok ? "Correct ✓"
+        : (norm(got) ? "Not quite ✗  →  " + expected.split("|")[0]
+                     : "Not answered ✗  →  " + expected.split("|")[0]);
+    }
+    q.classList.toggle("correct", ok);
+    q.classList.toggle("wrong", !ok);
+    return ok;
+  }
+
+  function updateTotal(){
+    var done = document.querySelectorAll('.block[data-checked="1"] .q').length;
+    var correct = document.querySelectorAll('.block[data-checked="1"] .q.correct').length;
+    var total = document.querySelectorAll('.q').length;
+    var el = document.getElementById("total");
+    el.textContent = correct + " / " + total + (done < total ? "  (" + done + " checked)" : "  — done!");
+  }
+
+  document.querySelectorAll(".check").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var block = btn.closest(".block");
+      var qs = Array.prototype.slice.call(block.querySelectorAll(".q"));
+      var correct = 0;
+      qs.forEach(function(q){ if(evalQuestion(q)) correct++; });
+      block.dataset.checked = "1";
+      block.querySelector(".blk-score").textContent = correct + " / " + qs.length;
+      updateTotal();
+      var firstWrong = block.querySelector(".q.wrong");
+      if(firstWrong) firstWrong.scrollIntoView({behavior:"smooth", block:"center"});
+    });
+  });
+
+  document.getElementById("reset").addEventListener("click", function(){
+    document.getElementById("quiz").reset();
+    document.querySelectorAll(".block").forEach(function(b){ delete b.dataset.checked; });
+    document.querySelectorAll(".q").forEach(function(q){
+      q.classList.remove("correct","wrong");
+      q.querySelector(".feedback").textContent = "";
+    });
+    document.querySelectorAll(".blk-score").forEach(function(s){ s.textContent = ""; });
+    document.getElementById("total").textContent = "— / 20";
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+})();
+</script>
+</body>
+</html>
