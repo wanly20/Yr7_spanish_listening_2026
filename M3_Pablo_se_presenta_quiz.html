@@ -22,39 +22,39 @@
     border:1px solid var(--line);border-radius:var(--radius);
     padding:11px 14px;margin:14px 0 10px;box-shadow:0 6px 16px rgba(150,110,70,.16)}
   audio{width:100%;display:block}
-  .audio-box .hint{color:var(--muted);font-size:.82rem;margin:7px 0 0;font-weight:400;
-    line-height:1.35}
+  .audio-box .hint{color:var(--muted);font-size:.82rem;margin:7px 0 0;font-weight:400;line-height:1.35}
   @media (max-width:480px){ .audio-box .hint{display:none} }
 
   .block{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
     padding:18px;margin:18px 0;box-shadow:0 2px 8px rgba(150,110,70,.07)}
   .block > h2{margin:0 0 4px;font-size:1.2rem;color:var(--accent)}
-  .block > .blk-desc{margin:0 0 6px;color:var(--muted);font-size:.9rem}
-  h3.part{margin:18px 0 2px;font-size:1rem;color:var(--ink)}
-  h3.part:first-of-type{margin-top:12px}
-  .part-desc{margin:0 0 6px;color:var(--muted);font-size:.85rem}
+  .block > .blk-desc{margin:0 0 10px;color:var(--muted);font-size:.9rem}
+  .block > .blk-desc .marks{font-weight:700;color:var(--ink)}
 
-  .q{padding:11px 0;border-top:1px solid var(--line)}
+  .q{padding:12px 0;border-top:1px solid var(--line)}
   .q .prompt{font-weight:600;margin-bottom:8px}
-  .q .prompt .num{color:var(--accent);margin-right:6px}
-  .es{font-style:normal;font-weight:700}
-  .scram{letter-spacing:.35em;font-weight:700;font-size:1.1rem;color:var(--accent);margin-bottom:8px}
+  .q .prompt .num{color:var(--accent);margin-right:6px;font-weight:800}
+
+  .q.example{background:var(--accent-soft);border-top:none;border-radius:10px;
+    padding:12px 14px;margin-bottom:4px}
+  .q.example .ex-tag{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.08em;
+    text-transform:uppercase;color:var(--accent);margin-right:8px}
+  .q.example .ex-note{margin:6px 0 0;font-size:.8rem;color:var(--muted)}
 
   .options{display:flex;flex-direction:column;gap:6px}
-  .options label{display:flex;align-items:center;gap:9px;padding:8px 10px;border:1px solid var(--line);
-    border-radius:10px;cursor:pointer;transition:background .12s}
+  .options label{display:flex;align-items:center;gap:9px;padding:8px 11px;border:1px solid var(--line);
+    border-radius:10px;cursor:pointer;transition:background .12s,border-color .12s}
   .options label:hover{background:var(--accent-soft)}
   .options input{accent-color:var(--accent);width:16px;height:16px;flex:none}
+  .options input:checked + span{font-weight:700}
+  .options label:has(input:checked){background:var(--accent-soft);border-color:var(--accent)}
+  .q.example .options label:has(input:checked){background:#fff;border-color:var(--accent)}
+  .options input:disabled{cursor:default}
 
-  input[type=text]{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:10px;
-    background:#fffdfa;min-width:150px}
-  input[type=text]:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
-  select{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:10px;background:#fffdfa}
-
-  .gapline{margin:2px 0;font-size:1.02rem}
-  .gapline input[type=text]{min-width:120px}
-  .match-row{display:flex;align-items:center;gap:12px;margin:4px 0;flex-wrap:wrap}
-  .match-row .es{min-width:130px}
+  .open-answer textarea{font:inherit;width:100%;padding:9px 11px;border:1px solid var(--line);
+    border-radius:10px;background:#fffdfa;resize:vertical;min-height:44px}
+  .open-answer textarea:focus{outline:2px solid var(--accent-soft);border-color:var(--accent)}
+  .q .qmarks{font-size:.8rem;color:var(--muted);font-weight:700;margin-left:4px}
 
   .feedback{margin-top:7px;font-size:.9rem;font-weight:600;display:none}
   .q.correct .feedback{display:block;color:var(--good)}
@@ -62,11 +62,25 @@
   .q.correct{background:var(--good-soft);border-radius:10px;padding-left:10px;padding-right:10px}
   .q.wrong{background:var(--bad-soft);border-radius:10px;padding-left:10px;padding-right:10px}
 
+  .model{display:none;margin-top:8px;padding:9px 12px;border-left:3px solid var(--accent);
+    background:var(--accent-soft);border-radius:0 8px 8px 0;font-size:.92rem}
+  .q.revealed .model{display:block}
+  .model .m-label{font-weight:800;color:var(--accent);font-size:.78rem;letter-spacing:.05em;
+    text-transform:uppercase;display:block;margin-bottom:2px}
+  .model .m-mark{display:block;margin-top:4px;color:var(--muted);font-size:.82rem}
+
   .blk-foot{margin-top:16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
   .check{background:var(--accent);color:#fff;font:inherit;font-weight:700;cursor:pointer;
     border:none;border-radius:12px;padding:10px 20px}
   .check:hover{background:#b0521f}
   .blk-score{font-weight:800;color:var(--accent)}
+
+  .selfmark{display:none;margin-top:14px;padding:12px 14px;border:1px dashed var(--accent);
+    border-radius:10px;background:#fffdfa}
+  .block[data-checked="1"] .selfmark{display:block}
+  .selfmark label{font-weight:700;font-size:.9rem}
+  .selfmark input{font:inherit;width:64px;padding:6px 8px;border:1px solid var(--line);
+    border-radius:8px;background:#fff;margin:0 4px}
 
   .bar{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);
     padding:12px 18px;display:flex;gap:14px;align-items:center;justify-content:center;
@@ -74,7 +88,7 @@
   #reset,#home{background:var(--accent-soft);color:var(--accent);font:inherit;font-weight:700;cursor:pointer;
     border:none;border-radius:12px;padding:10px 20px;text-decoration:none;display:inline-block}
   #home:hover{background:var(--accent);color:#fff}
-  #total{font-weight:800;font-size:1.05rem;color:var(--accent);min-width:130px;text-align:center}
+  #total{font-weight:800;font-size:1rem;color:var(--accent);min-width:170px;text-align:center}
 
   .end{margin:22px 0 4px;text-align:center}
   #show-transcript{background:#efe6d8;color:var(--muted);font:inherit;font-weight:700;
@@ -103,116 +117,72 @@
 
   <div class="audio-box">
     <audio controls preload="none" src="M3_Pablo_se_presenta.mp3"></audio>
-    <p class="hint">🎧 Play it as many times as you like. Do Part&nbsp;1, press <strong>Check Part&nbsp;1</strong>, then Part&nbsp;2.</p>
+    <p class="hint">🎧 Play it as many times as you like. Do Part&nbsp;1 and press <strong>Check Part&nbsp;1</strong>, then Part&nbsp;2.</p>
   </div>
 
   <form id="quiz">
 
-  <!-- ============ BLOCK 1 ============ -->
+  <!-- ============ PART 1 ============ -->
   <section class="block" data-block="1">
-    <h2>Part 1 · Listening</h2>
-    <p class="blk-desc">Listen to the audio and answer questions 1–10. You’ll hear one person — Pablo — introducing himself and talking about sport and the weather.</p>
+    <h2>Part 1 · Highlight the correct answer</h2>
+    <p class="blk-desc">Listen to Pablo talking about himself. Choose the correct answer for each question. <span class="marks">(5 marks)</span></p>
 
-    <h3 class="part">Choose the correct answer</h3>
-    <div class="q" data-type="mc" data-answer="d">
-      <div class="prompt"><span class="num">1.</span>How old is Pablo?</div>
+    <div class="q example">
+      <div class="prompt"><span class="ex-tag">Example</span>How does Pablo describe his personality?</div>
       <div class="options">
-        <label><input type="radio" name="q1" value="a"> doce</label>
-        <label><input type="radio" name="q1" value="b"> trece</label>
-        <label><input type="radio" name="q1" value="c"> catorce</label>
-        <label><input type="radio" name="q1" value="d"> quince</label>
+        <label><input type="radio" name="qex" value="a" checked disabled> <span>generous and fun</span></label>
+        <label><input type="radio" name="qex" value="b" disabled> <span>shy</span></label>
+        <label><input type="radio" name="qex" value="c" disabled> <span>serious</span></label>
       </div>
-      <div class="feedback"></div>
+      <p class="ex-note">The answer is done for you. Questions 1–5 are marked.</p>
     </div>
 
     <div class="q" data-type="mc" data-answer="c">
+      <div class="prompt"><span class="num">1.</span>How old is Pablo?</div>
+      <div class="options">
+        <label><input type="radio" name="q1" value="a"> <span>thirteen</span></label>
+        <label><input type="radio" name="q1" value="b"> <span>fourteen</span></label>
+        <label><input type="radio" name="q1" value="c"> <span>fifteen</span></label>
+      </div>
+      <div class="feedback"></div>
+    </div>
+
+    <div class="q" data-type="mc" data-answer="a">
       <div class="prompt"><span class="num">2.</span>What is Pablo's hair like?</div>
       <div class="options">
-        <label><input type="radio" name="q2" value="a"> rubio y rizado</label>
-        <label><input type="radio" name="q2" value="b"> negro y liso</label>
-        <label><input type="radio" name="q2" value="c"> negro y rizado</label>
-        <label><input type="radio" name="q2" value="d"> castaño y largo</label>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="mc" data-answer="a">
-      <div class="prompt"><span class="num">3.</span>What is Pablo's personality like?</div>
-      <div class="options">
-        <label><input type="radio" name="q3" value="a"> generoso y divertido</label>
-        <label><input type="radio" name="q3" value="b"> tímido y aburrido</label>
-        <label><input type="radio" name="q3" value="c"> antipático y arrogante</label>
-        <label><input type="radio" name="q3" value="d"> nervioso y torpe</label>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="mc" data-answer="a">
-      <div class="prompt"><span class="num">4.</span>What does Pablo do when it is sunny?</div>
-      <div class="options">
-        <label><input type="radio" name="q4" value="a"> jugar al fútbol</label>
-        <label><input type="radio" name="q4" value="b"> hacer natación</label>
-        <label><input type="radio" name="q4" value="c"> ver la tele</label>
-        <label><input type="radio" name="q4" value="d"> descansar en casa</label>
+        <label><input type="radio" name="q2" value="a"> <span>black and curly</span></label>
+        <label><input type="radio" name="q2" value="b"> <span>blond and straight</span></label>
+        <label><input type="radio" name="q2" value="c"> <span>brown and short</span></label>
       </div>
       <div class="feedback"></div>
     </div>
 
     <div class="q" data-type="mc" data-answer="b">
-      <div class="prompt"><span class="num">5.</span>What does Pablo do when it rains or is very windy?</div>
+      <div class="prompt"><span class="num">3.</span>What does Pablo do when it is sunny?</div>
       <div class="options">
-        <label><input type="radio" name="q5" value="a"> jugar al fútbol</label>
-        <label><input type="radio" name="q5" value="b"> hacer natación</label>
-        <label><input type="radio" name="q5" value="c"> ver la tele</label>
-        <label><input type="radio" name="q5" value="d"> jugar videojuegos</label>
+        <label><input type="radio" name="q3" value="a"> <span>goes swimming</span></label>
+        <label><input type="radio" name="q3" value="b"> <span>plays football with his team</span></label>
+        <label><input type="radio" name="q3" value="c"> <span>watches TV</span></label>
       </div>
       <div class="feedback"></div>
     </div>
 
-    <div class="q" data-type="mc" data-answer="d">
-      <div class="prompt"><span class="num">6.</span>What does Pablo do in winter, when it snows?</div>
+    <div class="q" data-type="mc" data-answer="c">
+      <div class="prompt"><span class="num">4.</span>What does Pablo do when it rains or is very windy?</div>
       <div class="options">
-        <label><input type="radio" name="q6" value="a"> jugar al fútbol</label>
-        <label><input type="radio" name="q6" value="b"> hacer natación</label>
-        <label><input type="radio" name="q6" value="c"> practicar deportes</label>
-        <label><input type="radio" name="q6" value="d"> ver la tele y descansar en casa</label>
+        <label><input type="radio" name="q4" value="a"> <span>cycling</span></label>
+        <label><input type="radio" name="q4" value="b"> <span>running</span></label>
+        <label><input type="radio" name="q4" value="c"> <span>swimming</span></label>
       </div>
       <div class="feedback"></div>
     </div>
 
-    <h3 class="part">True or false?</h3>
-    <div class="q" data-type="mc" data-answer="F">
-      <div class="prompt"><span class="num">7.</span>Pablo is 14 years old.</div>
+    <div class="q" data-type="mc" data-answer="a">
+      <div class="prompt"><span class="num">5.</span>Why does Pablo not do sport in winter, when it snows?</div>
       <div class="options">
-        <label><input type="radio" name="q7" value="T"> True</label>
-        <label><input type="radio" name="q7" value="F"> False</label>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="mc" data-answer="T">
-      <div class="prompt"><span class="num">8.</span>Pablo is tall.</div>
-      <div class="options">
-        <label><input type="radio" name="q8" value="T"> True</label>
-        <label><input type="radio" name="q8" value="F"> False</label>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="mc" data-answer="F">
-      <div class="prompt"><span class="num">9.</span>When it snows, Pablo plays football.</div>
-      <div class="options">
-        <label><input type="radio" name="q9" value="T"> True</label>
-        <label><input type="radio" name="q9" value="F"> False</label>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="mc" data-answer="T">
-      <div class="prompt"><span class="num">10.</span>Pablo sometimes feels lazy.</div>
-      <div class="options">
-        <label><input type="radio" name="q10" value="T"> True</label>
-        <label><input type="radio" name="q10" value="F"> False</label>
+        <label><input type="radio" name="q5" value="a"> <span>he prefers to stay in and watch TV</span></label>
+        <label><input type="radio" name="q5" value="b"> <span>he does not have a team</span></label>
+        <label><input type="radio" name="q5" value="c"> <span>it is too cold outside</span></label>
       </div>
       <div class="feedback"></div>
     </div>
@@ -223,110 +193,51 @@
     </div>
   </section>
 
-  <!-- ============ BLOCK 2 ============ -->
+  <!-- ============ PART 2 ============ -->
   <section class="block" data-block="2">
-    <h2>Part 2 · Vocabulary</h2>
-    <p class="blk-desc">Questions 11–20. Capital letters and accents are not required.</p>
+    <h2>Part 2 · Contesta en español</h2>
+    <p class="blk-desc">Answer in Spanish. Write one piece of information (<em>un detalle</em>) for each mark.
+      <span class="marks">(6 marks)</span><br>
+      Full sentence = 1 mark &nbsp;·&nbsp; one word = ½ mark. Accents are not essential.</p>
 
-    <h3 class="part">Fill the gap with the Spanish word</h3>
-    <div class="q" data-type="text" data-answer="negro">
-      <div class="prompt"><span class="num">11.</span>"I have ___ and curly hair" (black)</div>
-      <div class="gapline">Tengo el pelo <input type="text" autocomplete="off" spellcheck="false"> y rizado</div>
-      <div class="feedback"></div>
+    <div class="q" data-type="open" data-model="Tiene quince años. (o: Quince.)">
+      <div class="prompt"><span class="num">a.</span>¿Cuántos años tiene Pablo? <span class="qmarks">(1 mark)</span></div>
+      <div class="open-answer"><textarea rows="1" autocomplete="off" spellcheck="false"></textarea></div>
+      <div class="model"><span class="m-label">Model answer</span><span class="m-text"></span><span class="m-mark">1 mark for the age.</span></div>
     </div>
 
-    <div class="q" data-type="text" data-answer="fútbol|futbol">
-      <div class="prompt"><span class="num">12.</span>"When it is sunny, I play ___" (football)</div>
-      <div class="gapline">Cuando hace sol, juego al <input type="text" autocomplete="off" spellcheck="false"></div>
-      <div class="feedback"></div>
+    <div class="q" data-type="open" data-model="Es de España.">
+      <div class="prompt"><span class="num">b.</span>¿De dónde es Pablo? <span class="qmarks">(1 mark)</span></div>
+      <div class="open-answer"><textarea rows="1" autocomplete="off" spellcheck="false"></textarea></div>
+      <div class="model"><span class="m-label">Model answer</span><span class="m-text"></span><span class="m-mark">1 mark for the country.</span></div>
     </div>
 
-    <div class="q" data-type="text" data-answer="natación|natacion">
-      <div class="prompt"><span class="num">13.</span>"When it rains, I do ___" (swimming)</div>
-      <div class="gapline">Cuando llueve, hago <input type="text" autocomplete="off" spellcheck="false"></div>
-      <div class="feedback"></div>
+    <div class="q" data-type="open" data-model="Es generoso y divertido. A veces es perezoso.">
+      <div class="prompt"><span class="num">c.</span>¿Cómo es la personalidad de Pablo? <em>(dos detalles)</em> <span class="qmarks">(2 marks)</span></div>
+      <div class="open-answer"><textarea rows="2" autocomplete="off" spellcheck="false"></textarea></div>
+      <div class="model"><span class="m-label">Model answer</span><span class="m-text"></span><span class="m-mark">1 mark for each detail — any two of: generoso / divertido / a veces perezoso.</span></div>
     </div>
 
-    <div class="q" data-type="text" data-answer="ver">
-      <div class="prompt"><span class="num">14.</span>"I prefer to ___ TV" (to watch)</div>
-      <div class="gapline">Prefiero <input type="text" autocomplete="off" spellcheck="false"> la tele</div>
-      <div class="feedback"></div>
+    <div class="q" data-type="open" data-model="Juega al fútbol con su equipo.">
+      <div class="prompt"><span class="num">d.</span>¿Qué hace Pablo cuando hace sol? <span class="qmarks">(1 mark)</span></div>
+      <div class="open-answer"><textarea rows="1" autocomplete="off" spellcheck="false"></textarea></div>
+      <div class="model"><span class="m-label">Model answer</span><span class="m-text"></span><span class="m-mark">1 mark for the sport.</span></div>
     </div>
 
-    <h3 class="part">Match the meaning</h3>
-    <p class="part-desc">Choose the English meaning.</p>
-    <div class="q" data-type="select" data-answer="team">
-      <div class="prompt"><span class="num">15.</span></div>
-      <div class="match-row"><span class="es">el equipo</span>
-        <select>
-          <option value="">— choose —</option>
-          <option>team</option>
-          <option>winter</option>
-          <option>it's snowing</option>
-          <option>swimming</option>
-        </select>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="select" data-answer="winter">
-      <div class="prompt"><span class="num">16.</span></div>
-      <div class="match-row"><span class="es">el invierno</span>
-        <select>
-          <option value="">— choose —</option>
-          <option>team</option>
-          <option>winter</option>
-          <option>it's snowing</option>
-          <option>swimming</option>
-        </select>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="select" data-answer="it's snowing">
-      <div class="prompt"><span class="num">17.</span></div>
-      <div class="match-row"><span class="es">nieva</span>
-        <select>
-          <option value="">— choose —</option>
-          <option>team</option>
-          <option>winter</option>
-          <option>it's snowing</option>
-          <option>swimming</option>
-        </select>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="select" data-answer="swimming">
-      <div class="prompt"><span class="num">18.</span></div>
-      <div class="match-row"><span class="es">natación</span>
-        <select>
-          <option value="">— choose —</option>
-          <option>team</option>
-          <option>winter</option>
-          <option>it's snowing</option>
-          <option>swimming</option>
-        </select>
-      </div>
-      <div class="feedback"></div>
-    </div>
-
-    <h3 class="part">Write it in Spanish</h3>
-    <div class="q" data-type="text" data-answer="hace viento">
-      <div class="prompt"><span class="num">19.</span>"it is windy" <em>(2 words)</em></div>
-      <input type="text" autocomplete="off" spellcheck="false">
-      <div class="feedback"></div>
-    </div>
-
-    <div class="q" data-type="text" data-answer="ver la tele">
-      <div class="prompt"><span class="num">20.</span>"to watch TV" <em>(3 words)</em></div>
-      <input type="text" autocomplete="off" spellcheck="false">
-      <div class="feedback"></div>
+    <div class="q" data-type="open" data-model="Prefiere ver la tele y descansar en casa.">
+      <div class="prompt"><span class="num">e.</span>¿Qué prefiere hacer Pablo cuando nieva? <span class="qmarks">(1 mark)</span></div>
+      <div class="open-answer"><textarea rows="2" autocomplete="off" spellcheck="false"></textarea></div>
+      <div class="model"><span class="m-label">Model answer</span><span class="m-text"></span><span class="m-mark">1 mark for one activity (ver la tele / descansar en casa).</span></div>
     </div>
 
     <div class="blk-foot">
-      <button type="button" class="check" data-block="2">Check Part 2</button>
+      <button type="button" class="check" data-block="2">Show model answers</button>
       <span class="blk-score"></span>
+    </div>
+
+    <div class="selfmark">
+      <label>Mark yourself against the answers above — how many out of 6?
+        <input type="number" id="p2score" min="0" max="6" step="0.5" placeholder="0"> / 6</label>
     </div>
   </section>
 
@@ -334,7 +245,7 @@
 
   <div class="end">
     <button type="button" id="show-transcript" disabled>📄 Show transcript</button>
-    <p class="lock-hint">Unlocks after you check both parts.</p>
+    <p class="lock-hint">Unlocks after you check Part 1 and reveal the Part 2 answers.</p>
   </div>
 </div>
 
@@ -350,7 +261,7 @@
 <div class="bar">
   <a href="index.html" id="home">← Menu</a>
   <button type="button" id="reset">Reset</button>
-  <div id="total">— / 20</div>
+  <div id="total">Part 1: — / 5</div>
 </div>
 
 <script>
@@ -361,72 +272,75 @@
       .replace(/[!¡?¿.,;:]/g,"").replace(/\s+/g," ");
   };
 
-  function evalQuestion(q){
-    var type = q.dataset.type, expected = q.dataset.answer;
-    var fb = q.querySelector(".feedback"), got, ok;
-
-    if(type === "mc"){
-      var checked = q.querySelector("input[type=radio]:checked");
-      got = checked ? checked.value : null;
-      ok = got === expected;
-      if(ok){ fb.textContent = "Correct ✓"; }
-      else {
-        var right = q.querySelector('input[type=radio][value="'+expected+'"]');
-        var lbl = right ? right.closest("label").textContent.trim() : expected;
-        fb.textContent = (got ? "Incorrect ✗" : "Not answered ✗") + "  →  " + lbl;
-      }
-    } else if(type === "select"){
-      got = q.querySelector("select").value;
-      ok = got === expected;
-      fb.textContent = ok ? "Correct ✓"
-        : (got ? "Incorrect ✗  →  " + expected : "Not answered ✗  →  " + expected);
-    } else {
-      got = q.querySelector("input[type=text]").value;
-      ok = expected.split("|").map(norm).indexOf(norm(got)) !== -1;
-      fb.textContent = ok ? "Correct ✓"
-        : (norm(got) ? "Not quite ✗  →  " + expected.split("|")[0]
-                     : "Not answered ✗  →  " + expected.split("|")[0]);
+  function gradeMC(q){
+    var expected = q.dataset.answer;
+    var fb = q.querySelector(".feedback");
+    var checked = q.querySelector("input[type=radio]:checked");
+    var got = checked ? checked.value : null;
+    var ok = got === expected;
+    if(ok){ fb.textContent = "Correct ✓"; }
+    else {
+      var right = q.querySelector('input[type=radio][value="'+expected+'"]');
+      var lbl = right ? right.closest("label").textContent.trim() : expected;
+      fb.textContent = (got ? "Not quite ✗" : "Not answered ✗") + "  →  " + lbl;
     }
     q.classList.toggle("correct", ok);
     q.classList.toggle("wrong", !ok);
     return ok;
   }
 
+  function revealModel(q){
+    q.querySelector(".m-text").textContent = " " + (q.dataset.model || "");
+    q.classList.add("revealed");
+  }
+
+  function totalText(){
+    var p1checked = document.querySelector('.block[data-block="1"]').dataset.checked === "1";
+    var p2checked = document.querySelector('.block[data-block="2"]').dataset.checked === "1";
+    var p1 = document.querySelectorAll('.block[data-block="1"] .q.correct').length;
+    var out = "Part 1: " + (p1checked ? p1 : "—") + " / 5";
+    var s = document.getElementById("p2score").value;
+    out += "   ·   Part 2: " + (p2checked && s !== "" ? s : "—") + " / 6";
+    return out;
+  }
   function updateTotal(){
-    var done = document.querySelectorAll('.block[data-checked="1"] .q').length;
-    var correct = document.querySelectorAll('.block[data-checked="1"] .q.correct').length;
-    var total = document.querySelectorAll('.q').length;
-    var el = document.getElementById("total");
-    el.textContent = correct + " / " + total + (done < total ? "  (" + done + " checked)" : "  — done!");
-    if(done === total){
-      var bt = document.getElementById("show-transcript");
-      bt.disabled = false; bt.classList.add("ready");
-    }
+    document.getElementById("total").textContent = totalText();
+    var p1 = document.querySelector('.block[data-block="1"]').dataset.checked === "1";
+    var p2 = document.querySelector('.block[data-block="2"]').dataset.checked === "1";
+    var bt = document.getElementById("show-transcript");
+    if(p1 && p2){ bt.disabled = false; bt.classList.add("ready"); }
   }
 
   document.querySelectorAll(".check").forEach(function(btn){
     btn.addEventListener("click", function(){
       var block = btn.closest(".block");
-      var qs = Array.prototype.slice.call(block.querySelectorAll(".q"));
-      var correct = 0;
-      qs.forEach(function(q){ if(evalQuestion(q)) correct++; });
+      if(block.dataset.block === "1"){
+        var qs = Array.prototype.slice.call(block.querySelectorAll('.q[data-type="mc"]'));
+        var correct = 0;
+        qs.forEach(function(q){ if(gradeMC(q)) correct++; });
+        block.querySelector(".blk-score").textContent = correct + " / 5";
+        var fw = block.querySelector(".q.wrong");
+        if(fw) fw.scrollIntoView({behavior:"smooth", block:"center"});
+      } else {
+        block.querySelectorAll('.q[data-type="open"]').forEach(revealModel);
+        block.querySelector(".blk-score").textContent = "answers shown — mark yourself";
+      }
       block.dataset.checked = "1";
-      block.querySelector(".blk-score").textContent = correct + " / " + qs.length;
       updateTotal();
-      var firstWrong = block.querySelector(".q.wrong");
-      if(firstWrong) firstWrong.scrollIntoView({behavior:"smooth", block:"center"});
     });
   });
+
+  document.getElementById("p2score").addEventListener("input", updateTotal);
 
   document.getElementById("reset").addEventListener("click", function(){
     document.getElementById("quiz").reset();
     document.querySelectorAll(".block").forEach(function(b){ delete b.dataset.checked; });
     document.querySelectorAll(".q").forEach(function(q){
-      q.classList.remove("correct","wrong");
-      q.querySelector(".feedback").textContent = "";
+      q.classList.remove("correct","wrong","revealed");
+      var fb = q.querySelector(".feedback"); if(fb) fb.textContent = "";
     });
     document.querySelectorAll(".blk-score").forEach(function(s){ s.textContent = ""; });
-    document.getElementById("total").textContent = "— / 20";
+    document.getElementById("total").textContent = "Part 1: — / 5";
     var bt = document.getElementById("show-transcript");
     bt.disabled = true; bt.classList.remove("ready");
     document.getElementById("transcript-modal").classList.remove("open");
